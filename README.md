@@ -23,4 +23,4 @@ python app.py
 
 ## Flowchart
 
-![Job-Applicants-Filtering-Automation](https://github.com/user-attachments/assets/0f13ae4f-b97a-47e7-ab96-39f5399e7557)
+![Job-Applicants-Filtering-Automation](https://github.com/user-attachments/assets/0ed65137-11ff-4cbf-9eee-05f2cd00fe7e)
