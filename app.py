@@ -1,8 +1,9 @@
 import os
 import json
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import filedialog, messagebox, ttk, Canvas, Frame
 import pandas as pd
+from PIL import Image, ImageTk
 
 # Database pengguna (users.json)
 USER_DB_FILE = "users.json"
@@ -12,21 +13,48 @@ class LoginSystem:
     def __init__(self, root):
         self.root = root
         self.root.title("Login")
-        self.root.geometry("300x200")
-        self.root.configure(bg="#f7c1d7")
+        self.root.geometry("1920x1080")
+        
+        frame = tk.Frame(self.root)
+        frame.pack()
 
-        self.username = tk.StringVar()
-        self.password = tk.StringVar()
+        canvas = tk.Canvas(frame, width=1920, height=1080,bg='black')
+        canvas.pack()
 
-        # Create the login form elements
-        ttk.Label(self.root, text="Username:", background="#f7c1d7").grid(row=0, column=0, pady=10, padx=10, sticky="w")
-        ttk.Entry(self.root, textvariable=self.username).grid(row=0, column=1, pady=10, padx=10)
+        # Memuat background
+        bg_image_path = "assets/login-bg.png" 
+        bg_image = Image.open(bg_image_path)
+        bg_image = bg_image.resize((1920, 1080), Image.Resampling.LANCZOS)
+        self.bg_image_tk = ImageTk.PhotoImage(bg_image)
+        canvas.create_image(0, 0, anchor='nw', image=self.bg_image_tk)
 
-        ttk.Label(self.root, text="Password:", background="#f7c1d7").grid(row=1, column=0, pady=10, padx=10, sticky="w")
-        ttk.Entry(self.root, textvariable=self.password, show="*").grid(row=1, column=1, pady=10, padx=10)
+        # Memuat logo
+        logo_path = "assets/peek-a-job-logo-with-text.png" 
+        logo_image = Image.open(logo_path)
+        logo_image = logo_image.resize((500, 500), Image.Resampling.LANCZOS)
+        self.logo_image_tk = ImageTk.PhotoImage(logo_image)
+        canvas.create_image(960, 250, image=self.logo_image_tk) 
 
-        ttk.Button(self.root, text="Login", command=self.login).grid(row=2, column=0, columnspan=2, pady=10)
+        # Username widget
+        username_label = tk.Label(self.root, text="Username:", font=("Arial", 18, 'bold'), bg="white")
+        username_label.place(relx=0.4, rely=0.4, anchor="center")
+        self.username = tk.Entry(self.root, font=("Arial", 14))
+        self.username.place(relx=0.55, rely=0.4, anchor="center")
 
+        # Password widget
+        password_label = tk.Label(self.root, text="Password:", font=("Arial", 18, 'bold'), bg="white")
+        password_label.place(relx=0.4, rely=0.45, anchor="center")
+        self.password = tk.Entry(self.root, show="*", font=("Arial", 14))
+        self.password.place(relx=0.55, rely=0.45, anchor="center")
+
+        # Tombol Login
+        login_button = tk.Button(
+            self.root, text="Login", font=("Arial", 16, "bold"), bg="black", fg="white",
+            width=15, height=2, command=self.login
+        )
+        login_button.place(relx=0.5, rely=0.55, anchor="center")
+
+    # fungsi autentikasi login
     def login(self):
         try:
             with open(USER_DB_FILE, "r") as f:
@@ -53,53 +81,69 @@ class ApplicantFilterApp:
         self.username = username
         self.role = role
         self.root.title("Job Applicant Filter")
-        self.root.geometry("400x550")
+        self.root.geometry("1920x1080")
         self.root.configure(bg="#f7c1d7")
 
-        # Configuration Variables
+        self.canvas = tk.Canvas(self.root, width=1920, height=1080)
+        self.canvas.pack(fill="both", expand=True)
+
+        # Load UI background 
+        bg_image = Image.open("assets/main-app-bg.png") 
+        bg_image = bg_image.resize((1920, 1080), Image.Resampling.LANCZOS)
+        self.bg_image_tk = ImageTk.PhotoImage(bg_image)
+
+        self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image_tk)
+
         self.min_height = tk.IntVar(value=0)
         self.min_education = tk.IntVar(value=0)
         self.min_age = tk.IntVar(value=0)
         self.max_age = tk.IntVar(value=100)
         self.eyesight_allowed = tk.BooleanVar(value=True)
         self.keterangan_loker = tk.StringVar()
-        self.style = ttk.Style()
 
         self.create_widgets()
 
     def create_widgets(self):
-        ttk.Label(self.root, text=f"Welcome, {self.username} 🤚", font=("Helvetica", 16, "bold"), background="#f7c1d7").grid(row=0, column=0, columnspan=2, pady=10, padx=45)
+        # Teks welcome
+        tk.Label(self.root, text=f"Welcome, {self.username} 🤚", font=("Helvetica", 38, "bold"), background="#001c70", foreground='white').place(relx=0.5, rely=0.180, anchor="center")
 
-        ttk.Label(self.root, text="Keterangan Loker:", background="#f7c1d7").grid(row=1, column=0, pady=10, padx=40, sticky="w")
-        ttk.Entry(self.root, textvariable=self.keterangan_loker).grid(row=1, column=1, pady=10)
+        # Keterangan Loker
+        tk.Label(self.root, text="Keterangan Loker:", font=("Arial", 20), background="#f8f7f1").place(relx=0.4, rely=0.4, anchor="center")
+        tk.Entry(self.root, textvariable=self.keterangan_loker, font=("Arial", 16)).place(relx=0.55, rely=0.4, anchor="center")
 
-        ttk.Label(self.root, text="Minimum Height (cm):", background="#f7c1d7").grid(row=2, column=0, pady=10, padx=40, sticky="w")
-        ttk.Entry(self.root, textvariable=self.min_height).grid(row=2, column=1)
+        # Sisi Kiri: Minimum Height, Minimum Age, Maximum Age
+        tk.Label(self.root, text="Minimum Height (cm):", font=("Arial", 16), background="#f8f7f1").place(relx=0.25, rely=0.5, anchor="center")
+        tk.Entry(self.root, textvariable=self.min_height, font=("Arial", 16)).place(relx=0.4, rely=0.5, anchor="center")
 
-        ttk.Label(self.root, text="Minimum Education Level:", background="#f7c1d7").grid(row=3, column=0, pady=10, padx=40, sticky="w")
+        tk.Label(self.root, text="Minimum Age:", font=("Arial", 16), background="#f8f7f1").place(relx=0.25, rely=0.55, anchor="center")
+        tk.Entry(self.root, textvariable=self.min_age, font=("Arial", 16)).place(relx=0.4, rely=0.55, anchor="center")
+
+        tk.Label(self.root, text="Maximum Age:", font=("Arial", 16), background="#f8f7f1").place(relx=0.25, rely=0.6, anchor="center")
+        tk.Entry(self.root, textvariable=self.max_age, font=("Arial", 16)).place(relx=0.4, rely=0.6, anchor="center")
+
+        # Sisi Kanan: Minimum Education Level, Eyesight Problem Allowed
+        tk.Label(self.root, text="Minimum Education Level:", font=("Arial", 16), background="#f8f7f1").place(relx=0.6, rely=0.5, anchor="center")
         education_options = [("SMP", 0), ("SMA", 1), ("S1", 2)]
-        self.education_menu = ttk.Combobox(self.root, values=[opt[0] for opt in education_options], state="readonly")
+        self.education_menu = ttk.Combobox(self.root, values=[opt[0] for opt in education_options], state="readonly", font=("Arial", 16))
         self.education_menu.bind("<<ComboboxSelected>>", lambda event: self.min_education.set(dict(education_options)[self.education_menu.get()]))
-        self.education_menu.grid(row=3, column=1)
+        self.education_menu.place(relx=0.75, rely=0.5, anchor="center")
 
-        ttk.Label(self.root, text="Minimum Age:", background="#f7c1d7").grid(row=4, column=0, pady=10, padx=40, sticky="w")
-        ttk.Entry(self.root, textvariable=self.min_age).grid(row=4, column=1)
+        tk.Label(self.root, text="Eyesight Problem Allowed:", font=("Arial", 16), background="#f8f7f1").place(relx=0.6, rely=0.55, anchor="center")
+        tk.Checkbutton(self.root, variable=self.eyesight_allowed, font=("Arial", 16)).place(relx=0.75, rely=0.55, anchor="center")
 
-        ttk.Label(self.root, text="Maximum Age:", background="#f7c1d7").grid(row=5, column=0, pady=10, padx=40, sticky="w")
-        ttk.Entry(self.root, textvariable=self.max_age).grid(row=5, column=1)
+        # Tombol Preview Data
+        tk.Button(self.root, text="Preview Data", command=self.preview_data, width=20, font=("Arial", 14, "bold"), bg="#5273d6", fg='white', relief="flat").place(relx=0.7, rely=0.3, anchor="center")
+        
+        # Tombol management akun 
+        tk.Button(self.root, text="Manage Users", command=self.manage_users, width=20, font=("Arial", 14, "bold"), bg="#5273d6", fg='white', relief="flat").place(relx=0.85, rely=0.3, anchor="center")
 
-        ttk.Label(self.root, text="Eyesight Problem Allowed:", background="#f7c1d7").grid(row=6, column=0, pady=10, padx=40, sticky="w")
-        ttk.Checkbutton(self.root, variable=self.eyesight_allowed).grid(row=6, column=1)
+        # Tombol Load File and Apply Filter
+        tk.Button(self.root, text="Load File and Apply Filter", command=self.load_file, width=25, font=("Arial", 16, "bold"), bg="#5273d6", fg='white', relief="flat").place(relx=0.5, rely=0.8, anchor="center")
 
-        ttk.Button(self.root, text="Load File and Apply Filter", command=self.load_file, width=25).grid(row=7, column=0, columnspan=2, pady=20)
+        # Tombol Logout
+        tk.Button(self.root, text=" ⛔\nLogout", command=self.logout, width=10, font=("Arial", 16, "bold"), bg="#ff6961", fg='white', relief="flat").place(relx=0.95, rely=0.025, anchor="ne")
 
-        ttk.Button(self.root, text="Preview Data", command=self.preview_data).grid(row=8, column=0, columnspan=2, pady=10)
-
-        if self.role == "Head Of HR":
-            ttk.Button(self.root, text="Manage Users", command=self.manage_users).grid(row=9, column=0, columnspan=2, pady=10)
-
-        ttk.Button(self.root, text="    ⛔\nLogout", command=self.logout, width=10).grid(row=10, column=1, columnspan=2, pady=40, padx=70)
-
+    # Fungsi untuk membaca data yang di load
     def load_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("CSV files", "*.csv"), ("Excel files", "*.xlsx")])
         if not file_path:
@@ -127,7 +171,8 @@ class ApplicantFilterApp:
             messagebox.showinfo("Success", "Data has been filtered and saved!")
         except Exception as e:
             messagebox.showerror("Error", str(e))
-
+    
+    # Fitur untuk menyimpan hasil seleksi ke database
     def save_to_master_file(self, data):
         output_file = "output/output_database.xlsx"
         if os.path.exists(output_file):
@@ -136,7 +181,8 @@ class ApplicantFilterApp:
         else:
             combined_data = data
         combined_data.to_excel(output_file, index=False)
-
+    
+    # Fungsi untuk seleksi applicant sesuai input parameter
     def evaluate_applicant(self, applicant):
         try:
             height = applicant.get("Height", 0)
@@ -156,6 +202,7 @@ class ApplicantFilterApp:
             messagebox.showerror("Error", f"Missing required column: {e}")
             return "TIDAK LOLOS"
 
+    # Fungsi untuk membuka app preview data
     def preview_data(self):
         try:
             output_file = "output/output_database.xlsx"
@@ -168,31 +215,33 @@ class ApplicantFilterApp:
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
+    # Fungsi untuk autentikasi perizinan dan membuka manage user
     def manage_users(self):
         if self.role != "Head Of HR":
-            messagebox.showerror("Access Denied", "Only head users can manage users.")
+            messagebox.showerror("Access Denied", "Only Head of HR can manage users.")
             return
         
         UserManagement(self.root)
 
+    # Fungsi untuk logout -> kembali ke laman login
     def logout(self):
         self.root.destroy()
         login_window = tk.Tk()
         login_system = LoginSystem(login_window)
         login_window.mainloop()
 
-# Preview Data Window
+# Laman Preview Data 
 class PreviewWindow:
     def __init__(self, parent, data):
         self.window = tk.Toplevel(parent)
         self.window.title("Preview Data")
-        self.window.geometry("900x700")
+        self.window.geometry("1920x1080")
         self.data = data.copy()  
         self.filtered_data = data.copy() 
         self.create_widgets()
 
+    # Fungsi mendefinisikan widget pada UI
     def create_widgets(self):
-        # Opsi Filterisasi Preview
         filter_frame = ttk.Frame(self.window)
         filter_frame.pack(pady=10, fill=tk.X)
 
@@ -245,7 +294,7 @@ class PreviewWindow:
         self.populate_tree(self.filtered_data)
 
     def populate_tree(self, data):
-        # isi data awal preview
+        # isi data setelah filter
         self.tree.delete(*self.tree.get_children())
         for _, row in data.iterrows():
             self.tree.insert("", "end", values=list(row))
@@ -284,10 +333,19 @@ class UserManagement:
     def __init__(self, parent):
         self.root = tk.Toplevel(parent)
         self.root.title("Manage Users")
-        self.root.geometry("800x400")
+        self.root.geometry("1920x1080")
         self.root.configure(bg="#f7c1d7")
 
         self.load_users()
+
+        self.canvas = tk.Canvas(self.root, width=1920, height=1080)
+        self.canvas.pack(fill="both", expand=True)
+
+        bg_image = Image.open("assets/user-management-bg.png") 
+        bg_image = bg_image.resize((1920, 1080), Image.Resampling.LANCZOS)
+        self.bg_image_tk = ImageTk.PhotoImage(bg_image)
+
+        self.canvas.create_image(0, 0, anchor="nw", image=self.bg_image_tk)
 
         self.username = tk.StringVar()
         self.password = tk.StringVar()
@@ -303,36 +361,37 @@ class UserManagement:
             self.users = {}
 
     def create_widgets(self):
-        # UI tambah akun
-        ttk.Label(self.root, text="Username:", background="#f7c1d7").grid(row=0, column=0, pady=10, padx=10, sticky="w")
-        ttk.Entry(self.root, textvariable=self.username).grid(row=0, column=1, pady=10, padx=10)
+        # UI untuk penambahan akun (sisi kiri)
+        tk.Label(self.root, text="Username:", background="white", font=("Arial", 18)).place(relx=0.15, rely=0.25, anchor="center")
+        tk.Entry(self.root, textvariable=self.username, font=("Arial", 18), width=30).place(relx=0.3, rely=0.25, anchor="center")
 
-        ttk.Label(self.root, text="Password:", background="#f7c1d7").grid(row=1, column=0, pady=10, padx=10, sticky="w")
-        ttk.Entry(self.root, textvariable=self.password, show="*").grid(row=1, column=1, pady=10, padx=10)
+        tk.Label(self.root, text="Password:", background="white", font=("Arial", 18)).place(relx=0.15, rely=0.35, anchor="center")
+        tk.Entry(self.root, textvariable=self.password, show="*", font=("Arial", 18), width=30).place(relx=0.3, rely=0.35, anchor="center")
 
-        ttk.Label(self.root, text="Role:", background="#f7c1d7").grid(row=2, column=0, pady=10, padx=10, sticky="w")
-        ttk.Combobox(self.root, textvariable=self.role, values=["Staff", "Head Of HR"]).grid(row=2, column=1, pady=10, padx=10)
+        tk.Label(self.root, text="Role:", background="white", font=("Arial", 18)).place(relx=0.15, rely=0.45, anchor="center")
+        role_options = ["Staff", "Head Of HR", "Intern"]
+        self.role = ttk.Combobox(self.root, values=role_options, font=("Arial", 18), state="readonly")
+        self.role.place(relx=0.3, rely=0.45, anchor="center")
 
-        ttk.Button(self.root, text="Add User", command=self.add_user).grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Button(self.root, text="Add User", command=self.add_user, font=("Arial", 18, "bold"), bg="#5273d6", fg="white", relief="flat", width=20).place(relx=0.25, rely=0.6, anchor="center")
 
-        # UI hapus akun
-        ttk.Label(self.root, text="Existing Users:", background="#f7c1d7").grid(row=0, column=2, pady=10, padx=10, sticky="w")
-        
-        self.user_listbox = tk.Listbox(self.root)
-        self.user_listbox.grid(row=1, column=2, rowspan=3, pady=10, padx=10, sticky="nsew")  # Spanning 3 rows
-        
-        ttk.Button(self.root, text="Delete User", command=self.delete_user).grid(row=4, column=2, pady=10)
+        # UI untuk mengahpus akun (sisi kanan)
+        tk.Label(self.root, text="Existing Users:", background="white", font=("Arial", 18), bg="#5273d6", fg="white").place(relx=0.587, rely=0.25, anchor="center")
 
-        self.root.grid_rowconfigure(1, weight=1)  
-        self.root.grid_columnconfigure(2, weight=1)
+        self.user_listbox = tk.Listbox(self.root, font=("Arial", 16), height=11, width=50)
+        self.user_listbox.place(relx=0.7, rely=0.275, anchor="n")
+
+        tk.Button(self.root, text="Delete User", command=self.delete_user, font=("Arial", 18, "bold"), bg="#ff6961", fg="white", relief="flat", width=20).place(relx=0.7, rely=0.6, anchor="center")
 
         self.populate_user_list()
 
+    # Fungsi untuk menampilkan list akun yang ada
     def populate_user_list(self):
         self.user_listbox.delete(0, tk.END)
         for user in self.users:
             self.user_listbox.insert(tk.END, f"{user} - {self.users[user]['role']}")
 
+    # Fungsi untuk menambahkan user ke dalam database users.json 
     def add_user(self):
         username = self.username.get()
         password = self.password.get()
@@ -347,6 +406,7 @@ class UserManagement:
         else:
             messagebox.showerror("Error", "All fields are required.")
 
+    # Fungsi menghapus akun pada users.json
     def delete_user(self):
         selected_user = self.user_listbox.curselection()
         if selected_user:
