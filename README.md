@@ -18,7 +18,7 @@ pip install -r requirements.txt
 Run the desktop app script using this command:
 
 ```
-python app.py
+python main.py
 ```
 
 ## Flowchart
