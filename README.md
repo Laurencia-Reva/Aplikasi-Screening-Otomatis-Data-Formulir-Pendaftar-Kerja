@@ -1,10 +1,32 @@
-# Aplikasi Screening Otomatis Data Formulir Pelamar Kerja
+# Peek-A-Job (Aplikasi Screening Otomatis Data Pelamar Kerja)
 
-1. Aplikasi screening otomatis ini dirancang untuk membantu menyaring data pelamar kerja di suatu pabrik secara efisien. 
-2. ⁠Saat pelamar mengisi formulir pendaftaran, data dalam format csv atau excel bisa langsung dimasukkan ke aplikasi, kemudian secara otomatis menilai apakah pelamar memenuhi kriteria yang ditentukan. 
-3. Dengan aplikasi ini, proses seleksi administrasi jadi lebih cepat, membuat perusahaan bisa segera melihat siapa yang lolos seleksi tahap awal dan siap untuk diumumkan hasilnya, sehingga mempercepat proses rekrutmen secara keseluruhan.
-4. Konfigurasi penilaian atau syarat kelolosan administrasi data pelamar dapat diatur secara dinamis di dalam aplikasi sebelum menginput file csv atau excel
-5. Fitur analytics preview data dapat digunakan oleh recruiter untuk melihat hasil seleksi-seleksi yang saudah dilakukan dengan berbagai fitur filtering data yang lengkap dan cepat, fitur ini akan sangat membantu recruiter dalam membuat pelaporan terhadap atasannya.
+## Made By Kelompok 7
+- Mohammad Arief Rahman / I0324126
+- Laurencia Reva Anjaya / I0324130
+- Ni Made Adellia Marchela Putri / I0324132 
+
+## Background of the app
+
+### Mengapa aplikasi ini dibuat?
+Aplikasi ini dapat membantu mempercepat proses seleksi administrasi, mengurangi kemungkinan kesalahan manual, serta mempermudah perusahaan untuk segera mengidentifikasi pelamar yang memenuhi kriteria.
+
+### Apa yang dilakukan aplikasi ini?
+Aplikasi ini adalah alat yang dirancang untuk membantu menyaring data pelamar kerja secara otomatis di suatu pabrik. Aplikasi ini menganalisis data pelamar yang diinputkan dalam format CSV atau Excel, lalu menilai apakah pelamar memenuhi kriteria administrasi yang telah ditentukan.
+
+### Siapa yang dapat menggunakan aplikasi ini?
+Aplikasi ini ditujukan untuk digunakan oleh tim rekrutmen atau HR di perusahaan, terutama di pabrik-pabrik yang memiliki banyak pelamar dan membutuhkan proses seleksi yang cepat dan efisien.
+
+### Kapan aplikasi ini dapat digunakan?
+Aplikasi digunakan selama proses rekrutmen, khususnya pada tahap awal seleksi administrasi, saat perusahaan menerima banyak data pelamar kerja.
+
+### Dimana saja aplikasi ini dapat digunakan?
+Aplikasi dapat digunakan di mana saja, baik di kantor HR perusahaan atau tempat lain, asalkan memiliki perangkat yang mendukung pengoperasian aplikasi (komputer atau laptop).
+
+### How it works (bagaimana cara bekerja nya)?
+1. Data formulir pelamar kerja dalam format csv atau excel bisa langsung dimasukkan ke aplikasi, kemudian secara otomatis menilai apakah pelamar memenuhi kriteria yang ditentukan. 
+2. Konfigurasi penilaian atau syarat kelolosan administrasi data pelamar dapat diatur secara dinamis di dalam aplikasi sebelum menginput file csv atau excel
+3. Fitur analytics preview data dapat digunakan oleh recruiter untuk melihat hasil seleksi-seleksi yang saudah dilakukan dengan berbagai fitur filtering data yang lengkap dan cepat, fitur ini akan sangat membantu recruiter dalam membuat pelaporan terhadap atasannya.
+4. Aplikasi diberikan proses autentikasi ber hirarki untuk menghindari akses yang tidak sah mengakses aplikasi ini, akses admin terhadap aplikasi aman dan eksklusif untuk user akun tertentu (Head of HR). 
 
 ## Get started
 
